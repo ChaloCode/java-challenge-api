@@ -1,0 +1,67 @@
+buildscript {
+    ext {
+        cleanArchitectureVersion = '1.9.8'
+        springBootVersion = '3.4.4'
+        sonarVersion = '3.0'
+        jacocoVersion = '0.8.12'
+        lombokVersion = '1.18.36'
+        mapstructVersion = '1.6.3'
+        springCloudVersion = 'Greenwich.SR5'
+        junitBomVersion = '5.8.1'
+        junitPlatformRunner = '1.2.0'
+        junitJupiterEngine = '5.6.1'
+        junitVintageEngine = '5.6.1'
+        mockitoCoreVersion = '5.5.0'
+        mockitoJunitJupiter = '5.5.0'
+        flywayVersion = '8.0.5'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+
+plugins {
+    id 'java'
+    id 'jacoco'
+    id 'application'
+    id 'org.springframework.boot' version "${springBootVersion}"
+    id 'io.spring.dependency-management' version '1.1.6'
+    id 'org.springdoc.openapi-gradle-plugin' version '1.6.0'
+}
+
+group = 'com.bcnc'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'io.projectreactor:reactor-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+apply from: './main.gradle'
+
+
+springBoot {
+    mainClass = 'com.bcnc.MainApplication'
+}
+
+openApi {
+    apiDocsUrl.set("http://localhost:8080/v3/api-docs.yaml")
+    outputDir.set(file("docs/specs"))
+    outputFileName.set("swagger.yaml")
+}

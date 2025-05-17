@@ -1,0 +1,10 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+    }
+}
+
+rootProject.name = 'bcnc-challenge-api'
+
+include ':app-service'
+project(':app-service').projectDir = file('./applications/app-service')

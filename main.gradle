@@ -1,0 +1,209 @@
+allprojects {
+    repositories {
+        mavenCentral()
+    }
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'jacoco'
+    apply plugin: 'io.spring.dependency-management'
+
+    compileJava.dependsOn processResources
+
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(17)
+        }
+    }
+
+    configurations {
+        compileOnly {
+            extendsFrom annotationProcessor
+        }
+        compile {
+            exclude module: "spring-boot-starter-logging"
+        }
+    }
+
+    dependencies {
+        implementation 'com.google.guava:guava:32.1.2-jre'
+        implementation 'com.github.jnr:jnr-posix:3.1.9'
+        ext['log4j2.version'] = '2.17.1'
+        implementation platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
+        implementation('org.springframework.boot:spring-boot-starter-validation')
+        implementation(platform("org.apache.logging.log4j:log4j-bom:2.17.1"))
+        implementation 'org.springframework.boot:spring-boot-starter-webflux'
+        implementation 'org.yaml:snakeyaml:2.1'
+        compileOnly "org.projectlombok:lombok:${lombokVersion}"
+        annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+        implementation "org.mapstruct:mapstruct:${mapstructVersion}"
+        annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
+        testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
+        testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+        testAnnotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
+        testImplementation 'uk.org.webcompere:system-stubs-jupiter:2.0.2'
+        testImplementation 'io.projectreactor:reactor-test'
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+        testImplementation 'org.jeasy:easy-random-core:5.0.0'
+        testImplementation 'uk.co.jemos.podam:podam:7.2.11.RELEASE'
+    }
+
+    tasks.named('test') {
+        useJUnitPlatform()
+
+        dependsOn 'cleanTest'
+
+        testLogging {
+            events "passed", "skipped", "failed"
+        }
+    }
+
+    jacoco {
+        toolVersion = "${jacocoVersion}"
+        reportsDirectory.set(layout.buildDirectory.dir("reports/jacoco"))
+    }
+
+    if (!tasks.findByName('jacocoTestReport')) {
+        tasks.register('jacocoTestReport', JacocoReport) {
+            dependsOn test
+            group = "Reporting"
+            reports {
+                xml.required.set(true)
+                csv.required.set(false)
+                html.required.set(true)
+            }
+            afterEvaluate {
+                classDirectories.setFrom files(classDirectories.files.collect {
+                    fileTree(dir: it,
+                            exclude: [
+                                    '**/constant/**',
+                                    '**/config/**',
+                                    '**/util/**',
+                                    '**/*Props.*'
+                            ])
+                })
+            }
+            finalizedBy tasks.named('jacocoTestCoverageVerification')
+        }
+    }
+
+    if (!tasks.findByName('jacocoTestCoverageVerification')) {
+        tasks.register('jacocoTestCoverageVerification', JacocoCoverageVerification) {
+            afterEvaluate {
+                classDirectories.setFrom files(classDirectories.files.collect {
+                    fileTree(dir: it,
+                            exclude: [
+                                    '**/constant/**',
+                                    '**/config/**',
+                                    '**/util/**',
+                                    '**/*Props.*'
+                            ])
+                })
+            }
+            violationRules {
+                rule {
+                    element = 'CLASS'
+                    limit {
+                        counter = 'BRANCH'
+                        value = 'COVEREDRATIO'
+                        minimum = 0.90
+                    }
+                }
+            }
+        }
+    }
+
+    tasks.named('check') {
+        dependsOn tasks.named('jacocoTestCoverageVerification')
+    }
+
+    dependencyManagement {
+        imports {
+            mavenBom("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+            mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+        }
+    }
+}
+
+tasks.register('jacocoMergedReport', JacocoReport) {
+    dependsOn subprojects.jacocoTestReport
+    additionalSourceDirs.setFrom files(subprojects.sourceSets.main.allSource.srcDirs)
+    sourceDirectories.setFrom files(subprojects.sourceSets.main.allSource.srcDirs)
+    classDirectories.setFrom files(subprojects.sourceSets.main.output)
+    executionData.setFrom project.fileTree(dir: '.', include: '**/build/jacoco/test.exec')
+    reports {
+        xml.required.set(true)
+        csv.required.set(false)
+        html.required.set(true)
+    }
+}
+
+project(':app-service') {
+    tasks.register('copyJarIntoBuildOfRootDirectory', Copy) {
+        dependsOn deleteBootJar
+        dependsOn startScripts
+        dependsOn bootStartScripts
+        dependsOn bootJar
+
+        from "build/libs/app-service.jar"
+        into "${rootDir}/build/libs/"
+    }
+}
+
+tasks.register('deleteBootJar') {
+    doFirst {
+        def jarFiles = fileTree(dir: "${rootDir}/build/libs", include: ["${project.name}-*.jar"])
+        jarFiles.each { jarFile ->
+            delete jarFile
+        }
+    }
+}
+
+tasks.named('jacocoMergedReport') {
+    inputs.files(tasks.named('test').get().outputs.files)
+    dependsOn tasks.named('test')
+    mustRunAfter tasks.named('test')
+    dependsOn project(':app-service').tasks.named('copyJarIntoBuildOfRootDirectory')
+}
+
+tasks.register('copyCoverageReport', Copy) {
+    dependsOn tasks.named('jacocoMergedReport')
+    from layout.buildDirectory.file("reports/jacoco/jacocoMergedReport/jacocoMergedReport.xml")
+    rename { String filename ->
+        return "jacocoTestReport.xml"
+    }
+    into layout.buildDirectory.dir("reports/jacoco/test")
+}
+
+tasks.named('jacocoMergedReport') {
+    dependsOn tasks.named('bootStartScripts')
+    dependsOn tasks.named('startScripts')
+}
+
+tasks.named('distZip') {
+    dependsOn project(':app-service').tasks.named('copyJarIntoBuildOfRootDirectory')
+}
+
+tasks.named('distTar') {
+    dependsOn project(':app-service').tasks.named('copyJarIntoBuildOfRootDirectory')
+}
+
+tasks.named('bootDistZip') {
+    dependsOn project(':app-service').tasks.named('copyJarIntoBuildOfRootDirectory')
+}
+
+tasks.named('bootDistTar') {
+    dependsOn project(':app-service').tasks.named('copyJarIntoBuildOfRootDirectory')
+}
+
+tasks.withType(JavaCompile).configureEach {
+    finalizedBy tasks.named('copyCoverageReport')
+    options.compilerArgs = [
+            '-Xlint:unchecked', '-Amapstruct.suppressGeneratorTimestamp=true'
+    ]
+}
+
+tasks.named('wrapper') {
+    gradleVersion = '8.11'
+}
