@@ -1,4 +1,4 @@
-package com.mercadolibre.model.utils;
+package com.bcnc.model.utils;
 
 import static java.lang.annotation.ElementType.CONSTRUCTOR;
 import static java.lang.annotation.ElementType.METHOD;

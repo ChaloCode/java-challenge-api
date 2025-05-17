@@ -1,7 +1,8 @@
-package com.mercadolibre.api.exception;
+package com.bcnc.api.exception;
 
-import com.mercadolibre.api.exception.dto.ErrorResponseDTO;
-import com.mercadolibre.model.exception.MyCustomException;
+
+import com.bcnc.api.exception.dto.ErrorResponseDTO;
+import com.bcnc.model.exception.MyCustomException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.web.WebProperties;
 import org.springframework.boot.autoconfigure.web.reactive.error.AbstractErrorWebExceptionHandler;

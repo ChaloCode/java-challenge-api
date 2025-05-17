@@ -1,4 +1,4 @@
-package com.mercadolibre.api.exception.dto;
+package com.bcnc.api.exception.dto;
 
 import lombok.Builder;
 

@@ -1,8 +1,8 @@
-package com.mercadolibre.model.exception.codes;
+package com.bcnc.model.exception.codes;
 
 
-import com.mercadolibre.model.exception.UseCaseEnum;
-import com.mercadolibre.model.utils.Generated;
+import com.bcnc.model.exception.UseCaseEnum;
+import com.bcnc.model.utils.Generated;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 

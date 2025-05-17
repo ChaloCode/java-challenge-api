@@ -1,12 +1,12 @@
-package com.mercadolibre.api.router;
+package com.bcnc.api.router;
 
 import static org.springframework.web.reactive.function.server.RequestPredicates.GET;
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
 
-import com.mercadolibre.api.dto.ErrorResponseExampleDTO;
-import com.mercadolibre.api.dto.ResponseExampleDTO;
-import com.mercadolibre.model.exception.MyCustomException;
-import com.mercadolibre.model.exception.codes.MyCustomPricingCodesEnum;
+import com.bcnc.api.dto.ErrorResponseExampleDTO;
+import com.bcnc.api.dto.ResponseExampleDTO;
+import com.bcnc.model.exception.MyCustomException;
+import com.bcnc.model.exception.codes.MyCustomPricingCodesEnum;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;

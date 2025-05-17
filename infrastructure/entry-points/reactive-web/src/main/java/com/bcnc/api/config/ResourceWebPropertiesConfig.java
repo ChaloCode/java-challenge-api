@@ -1,4 +1,4 @@
-package com.mercadolibre.api.config;
+package com.bcnc.api.config;
 
 import org.springframework.boot.autoconfigure.web.WebProperties;
 import org.springframework.context.annotation.Bean;

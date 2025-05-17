@@ -1,7 +1,7 @@
-package com.mercadolibre.model.exception;
+package com.bcnc.model.exception;
 
-import com.mercadolibre.model.exception.codes.MyCustomPricingCodesEnum;
-import com.mercadolibre.model.utils.Generated;
+import com.bcnc.model.exception.codes.MyCustomPricingCodesEnum;
+import com.bcnc.model.utils.Generated;
 import lombok.Getter;
 
 @Generated
