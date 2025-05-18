@@ -33,25 +33,26 @@ public class RestProjectRouter {
   private final PriceController priceController;
 
   @RouterOperation(
-      //beanClass = HandlerClassName.class,
-      //beanMethod = "handlerMethodName",
-      path = "/rest/resource",
-      produces = {
-          MediaType.APPLICATION_JSON_VALUE},
+      path = "/api/brands/{brandId}/products/{productId}/prices/{consultationDate}",
+      produces = {MediaType.APPLICATION_JSON_VALUE},
       method = RequestMethod.GET,
       operation = @Operation(
-          tags = "groupOfOperationsName",
-          operationId = "operationIdName",
-          summary = "Operation summary",
-          description = "Operation description",
+          tags = "Prices",
+          operationId = "getPrice",
+          summary = "Obtener el precio de un producto para una marca en una fecha específica",
+          description = "Devuelve el precio más relevante para un producto y marca en una fecha dada.",
           parameters = {
-              @Parameter(name = "queryParamOne", in = ParameterIn.QUERY, required = true),
-              @Parameter(name = "queryParamTwo", in = ParameterIn.QUERY, required = true),
-              @Parameter(name = "queryParamThree", in = ParameterIn.QUERY, required = true)
+              @Parameter(name = "brandId", in = ParameterIn.PATH, required = true, description = "ID de la marca"),
+              @Parameter(name = "productId", in = ParameterIn.PATH, required = true, description = "ID del producto"),
+              @Parameter(name = "consultationDate", in = ParameterIn.PATH, required = true, description = "Fecha de consulta en formato yyyy-MM-dd o yyyy-MM-dd HH:mm:ss")
           },
           responses = {
-              @ApiResponse(responseCode = "200", description = "Successful operation", content = @Content(schema = @Schema(implementation = ResponseExampleDTO.class))),
-              @ApiResponse(responseCode = "400", description = "Missing parameters", content = @Content(schema = @Schema(implementation = ErrorResponseExampleDTO.class)))}
+              @ApiResponse(responseCode = "200", description = "Operación exitosa, se devuelve el precio", content = @Content(schema = @Schema(implementation = ResponseExampleDTO.class))),
+              @ApiResponse(responseCode = "204", description = "No hay contenido, no se encontró un precio relevante"),
+              @ApiResponse(responseCode = "400", description = "Solicitud inválida, parámetros incorrectos", content = @Content(schema = @Schema(implementation = ErrorResponseExampleDTO.class))),
+              @ApiResponse(responseCode = "404", description = "No se encontró el recurso solicitado"),
+              @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+          }
       )
   )
   @Bean
