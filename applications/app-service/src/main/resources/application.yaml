@@ -5,6 +5,12 @@ spring:
     add-properties: false
   profiles:
     active: ${SCOPE_SUFFIX}
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:/migrations/schema.sql
+      data-locations: classpath:/migrations/data.sql
+
 
 app:
   title: bcnc-challenge-api
@@ -23,3 +29,4 @@ springdoc:
   swagger-ui:
     operations-sorter: alpha
     disable-swagger-default-url: true
+
