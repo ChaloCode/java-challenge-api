@@ -1,12 +1,12 @@
-package com.bcnc.api.router;
+package com.bcnc.api.rest.router;
 
 import static org.springframework.web.reactive.function.server.RequestPredicates.GET;
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
 
 import com.bcnc.api.dto.ErrorResponseExampleDTO;
 import com.bcnc.api.dto.ResponseExampleDTO;
-import com.bcnc.model.exception.MyCustomException;
-import com.bcnc.model.exception.codes.MyCustomPricingCodesEnum;
+import com.bcnc.api.rest.health.PingRest;
+import com.bcnc.api.rest.price.PriceController;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -21,14 +21,16 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerResponse;
-import reactor.core.publisher.Mono;
 
 @Configuration
 @RequiredArgsConstructor
-public class RestExampleRouter {
+public class RestProjectRouter {
 
-  private static final String DUMMY_RESOURCE = "/rest/resource";
-  private static final String EXCEPTION_EXAMPLE = "/exception-example";
+  private static final String HEALTH_PING = "/api/ping";
+  private static final String GET_PRICE = "/api/brands/{brandId}/products/{productId}/prices/{consultationDate}";
+
+  private final PingRest pingRest;
+  private final PriceController priceController;
 
   @RouterOperation(
       //beanClass = HandlerClassName.class,
@@ -54,10 +56,9 @@ public class RestExampleRouter {
   )
   @Bean
   public RouterFunction<ServerResponse> restRouterFunction() {
-    return route(GET(DUMMY_RESOURCE),
-        req -> ServerResponse.ok().build())
-        .andRoute(GET(EXCEPTION_EXAMPLE),
-            req -> Mono.error(new MyCustomException(MyCustomPricingCodesEnum.MY_CUSTOM_PRICING_CODES_ENUM)));
+    return route(GET(HEALTH_PING), req -> pingRest.ping())
+        .andRoute(GET(GET_PRICE), priceController::getPrice);
   }
 
 }
+
