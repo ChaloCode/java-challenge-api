@@ -26,6 +26,6 @@ class H2ConfigurationTest {
   @Test
   void shouldUseCorrectDatabaseName() {
     String factoryString = factory.toString();
-    assertThat(factoryString).contains(H2Configuration.DB_NAME);
+    assertThat(factoryString).contains("test_db");
   }
 }
