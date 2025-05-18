@@ -1,6 +1,6 @@
 package com.bcnc.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
@@ -8,10 +8,10 @@ import org.springframework.r2dbc.core.DatabaseClient;
 
 
 @Configuration
+@RequiredArgsConstructor
 public class DataVerifier {
 
-  @Autowired
-  private DatabaseClient databaseClient;
+  private final DatabaseClient databaseClient;
 
   @EventListener(ApplicationReadyEvent.class)
   public void verifyData() {

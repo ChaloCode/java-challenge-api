@@ -1,8 +1,7 @@
 package com.bcnc.api.exception;
 
-import com.bcnc.api.exception.dto.ErrorResponseDTO;
 import com.bcnc.model.exception.MyCustomException;
-import com.bcnc.model.exception.codes.MyCustomPricingCodesEnum;
+import com.bcnc.model.exception.codes.MyCustomPricingCodes;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
@@ -15,7 +14,7 @@ public class RequestValidator {
   private RequestValidator() {
   }
 
-  public static <T> T validate(T data, MyCustomPricingCodesEnum pricingCodesEnum) {
+  public static <T> T validate(T data, MyCustomPricingCodes pricingCodesEnum) {
     val concatCharacter = "%s - %s";
     val errorMessage = "Validate error on '%s': ";
     Validator validator = Validation.buildDefaultValidatorFactory().getValidator();

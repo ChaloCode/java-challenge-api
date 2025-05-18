@@ -3,10 +3,10 @@ package com.bcnc.api.rest.router;
 import static org.springframework.web.reactive.function.server.RequestPredicates.GET;
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
 
-import com.bcnc.api.dto.ErrorResponseExampleDTO;
-import com.bcnc.api.dto.ResponseExampleDTO;
+import com.bcnc.api.exception.dto.CustomErrorResponse;
 import com.bcnc.api.rest.health.PingRest;
 import com.bcnc.api.rest.price.PriceController;
+import com.bcnc.api.rest.price.dto.FinalPriceResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -47,9 +47,9 @@ public class RestProjectRouter {
               @Parameter(name = "consultationDate", in = ParameterIn.PATH, required = true, description = "Fecha de consulta en formato yyyy-MM-dd o yyyy-MM-dd HH:mm:ss")
           },
           responses = {
-              @ApiResponse(responseCode = "200", description = "Operación exitosa, se devuelve el precio", content = @Content(schema = @Schema(implementation = ResponseExampleDTO.class))),
+              @ApiResponse(responseCode = "200", description = "Operación exitosa, se devuelve el precio", content = @Content(schema = @Schema(implementation = FinalPriceResponse.class))),
               @ApiResponse(responseCode = "204", description = "No hay contenido, no se encontró un precio relevante"),
-              @ApiResponse(responseCode = "400", description = "Solicitud inválida, parámetros incorrectos", content = @Content(schema = @Schema(implementation = ErrorResponseExampleDTO.class))),
+              @ApiResponse(responseCode = "400", description = "Solicitud inválida, parámetros incorrectos", content = @Content(schema = @Schema(implementation = CustomErrorResponse.class))),
               @ApiResponse(responseCode = "404", description = "No se encontró el recurso solicitado"),
               @ApiResponse(responseCode = "500", description = "Error interno del servidor")
           }

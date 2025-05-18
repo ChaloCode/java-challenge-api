@@ -4,7 +4,7 @@ import com.bcnc.api.exception.RequestValidator;
 import com.bcnc.api.rest.price.mapper.FinalPriceResponseMapper;
 import com.bcnc.api.rest.price.mapper.PriceParamMapper;
 import com.bcnc.api.rest.price.mapper.PriceParamRequestMapper;
-import com.bcnc.model.exception.codes.MyCustomPricingCodesEnum;
+import com.bcnc.model.exception.codes.MyCustomPricingCodes;
 import com.bcnc.usecase.price.PriceUseCase;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +24,7 @@ public class PriceController {
 
   public Mono<ServerResponse> getPrice(ServerRequest serverRequest) {
     return Mono.fromSupplier(() -> PriceParamRequestMapper.toMap(serverRequest))
-        .map(request -> RequestValidator.validate(request, MyCustomPricingCodesEnum.MY_CUSTOM_PRICING_CODES_ENUM))
+        .map(request -> RequestValidator.validate(request, MyCustomPricingCodes.MY_CUSTOM_PRICING_CODES_ENUM))
         .map(priceParamMapper::toModel)
         .flatMap(priceUseCase::execute)
         .map(finalPriceResponseMapper::toResponse)

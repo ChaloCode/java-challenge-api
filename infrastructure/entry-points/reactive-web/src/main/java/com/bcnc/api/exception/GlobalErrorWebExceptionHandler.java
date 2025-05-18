@@ -1,7 +1,7 @@
 package com.bcnc.api.exception;
 
 
-import com.bcnc.api.exception.dto.ErrorResponseDTO;
+import com.bcnc.api.exception.dto.CustomErrorResponse;
 import com.bcnc.model.exception.MyCustomException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.web.WebProperties;
@@ -69,7 +69,7 @@ public class GlobalErrorWebExceptionHandler extends AbstractErrorWebExceptionHan
   private Mono<ServerResponse> buildErrorResponse(String errorCode, String message, HttpStatus status) {
     return ServerResponse.status(status)
         .contentType(MediaType.APPLICATION_JSON)
-        .body(BodyInserters.fromValue(ErrorResponseDTO.builder()
+        .body(BodyInserters.fromValue(CustomErrorResponse.builder()
             .code(errorCode)
             .message(message)
             .build()));
