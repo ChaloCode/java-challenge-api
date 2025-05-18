@@ -1,0 +1,11 @@
+dependencies {
+    implementation project(':model')
+    implementation project(':usecase')
+
+    implementation 'org.springframework:spring-context'
+    implementation 'org.springframework.boot:spring-boot-starter-data-r2dbc'
+    implementation 'io.r2dbc:r2dbc-h2'
+    implementation 'com.h2database:h2'
+
+    testImplementation 'org.reactivecommons.utils:object-mapper:0.1.0'
+}
