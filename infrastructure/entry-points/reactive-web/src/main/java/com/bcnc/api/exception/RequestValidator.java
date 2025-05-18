@@ -1,7 +1,7 @@
 package com.bcnc.api.exception;
 
-import com.bcnc.model.exception.MyCustomException;
-import com.bcnc.model.exception.codes.MyCustomPricingCodes;
+import com.bcnc.model.exception.InvalidParametersException;
+import com.bcnc.model.exception.codes.MyCustomCodes;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
@@ -14,7 +14,7 @@ public class RequestValidator {
   private RequestValidator() {
   }
 
-  public static <T> T validate(T data, MyCustomPricingCodes pricingCodesEnum) {
+  public static <T> T validate(T data, MyCustomCodes pricingCodesEnum) {
     val concatCharacter = "%s - %s";
     val errorMessage = "Validate error on '%s': ";
     Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
@@ -26,7 +26,7 @@ public class RequestValidator {
           .map(v -> String.format(concatCharacter, v.getPropertyPath(), v.getMessage()))
           .collect(Collectors.joining(";",
               String.format(errorMessage, data.getClass().getSimpleName()), StringUtils.EMPTY));
-      throw new MyCustomException(pricingCodesEnum, message);
+      throw new InvalidParametersException(pricingCodesEnum, message);
     }
   }
 }

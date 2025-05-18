@@ -1,5 +1,7 @@
 package com.bcnc.model.price;
 
+import com.bcnc.model.exception.ErrorFormatToLocalDateException;
+import com.bcnc.model.exception.codes.MyCustomCodes;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import lombok.Builder;
@@ -22,7 +24,7 @@ public record PriceParam(
       return LocalDateTime.parse(date, formatter);
     } catch (Exception e) {
       log.error("Error al parsear la fecha: {}", consultationDate, e);
-      throw new IllegalArgumentException("Formato de fecha no válido: " + consultationDate);
+      throw new ErrorFormatToLocalDateException(MyCustomCodes.ILLEGAL_ARGUMENT, "Formato de fecha no válido: " + consultationDate);
     }
   }
 

@@ -7,7 +7,8 @@ import lombok.Getter;
 @Getter
 public enum UseCaseCode {
 
-  GENERIC("generic", 0);
+  GENERIC("generic", 0),
+  CRITICAL("critical", 1);
 
   private final String useCaseName;
   private final int useCaseCode;

@@ -2,7 +2,8 @@ package com.bcnc.api.exception;
 
 
 import com.bcnc.api.exception.dto.CustomErrorResponse;
-import com.bcnc.model.exception.MyCustomException;
+import com.bcnc.model.exception.ErrorFormatToLocalDateException;
+import com.bcnc.model.exception.InvalidParametersException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.web.WebProperties;
 import org.springframework.boot.autoconfigure.web.reactive.error.AbstractErrorWebExceptionHandler;
@@ -44,16 +45,27 @@ public class GlobalErrorWebExceptionHandler extends AbstractErrorWebExceptionHan
 
   private Mono<ServerResponse> renderErrorResponse(ServerRequest request) {
     return Mono.defer(() -> Mono.error(getError(request))
-        .onErrorResume(MyCustomException.class, this::handleMyCustomException)
+        .onErrorResume(InvalidParametersException.class, this::handleInvalidParametersException)
+        .onErrorResume(ErrorFormatToLocalDateException.class, this::handleErrorFormatToLocalDateException)
         .onErrorResume(NoResourceFoundException.class, this::handleNoResourceFoundException)
         .onErrorResume(this::handleGenericException)
     ).cast(ServerResponse.class);
   }
 
-  private Mono<ServerResponse> handleMyCustomException(MyCustomException myCustomException) {
-    log.warn("MyCustomException: {}", myCustomException.getLocalizedMessage());
-    return buildErrorResponse(myCustomException.getPricingCodesEnum().getErrorCode(), myCustomException.getMessage(),
-        HttpStatus.valueOf(myCustomException.getPricingCodesEnum().getStatusCode()));
+  private Mono<ServerResponse> handleInvalidParametersException(InvalidParametersException invalidParametersException) {
+    log.warn("InvalidParametersException: {} - {} - {}", invalidParametersException.getLocalizedMessage(),
+        invalidParametersException.getPricingCodesEnum().getErrorCode(), invalidParametersException.getPricingCodesEnum().getMessage());
+    return buildErrorResponse(invalidParametersException.getPricingCodesEnum().getErrorCode(), invalidParametersException.getMessage(),
+        HttpStatus.BAD_REQUEST);
+  }
+
+  private Mono<ServerResponse> handleErrorFormatToLocalDateException(ErrorFormatToLocalDateException errorFormatToLocalDateException) {
+    log.error("errorFormatToLocalDateException: {} - {} - {}", errorFormatToLocalDateException.getPricingCodesEnum().getErrorCode(),
+        errorFormatToLocalDateException.getLocalizedMessage(),
+        errorFormatToLocalDateException.getPricingCodesEnum().getMessage());
+    return buildErrorResponse(errorFormatToLocalDateException.getPricingCodesEnum().getErrorCode(),
+        errorFormatToLocalDateException.getMessage(),
+        HttpStatus.INTERNAL_SERVER_ERROR);
   }
 
   private Mono<ServerResponse> handleNoResourceFoundException(NoResourceFoundException noResourceFoundException) {
