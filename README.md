@@ -1,61 +1,225 @@
-# Prueba técnica Inditex Core Platform
+# Solución
 
-## Descripción del problema
+## Prueba Técnica Inditex Core Platform
 
-Dentro del sistema core del ecommerce de Inditex mantenemos una base de datos que almacena los precios de los productos para cada una de las marcas. Para gestionar esta información, utilizamos una tabla llamada "PRICES". Esta tabla contiene los datos esenciales de los precios de productos, como el precio final de venta (PVP), la tarifa a aplicar en un determinado rango de fechas y otros detalles relevantes. A continuación, se presenta un ejemplo de la estructura de la tabla junto con una breve descripción de sus campos:
+## Descripción del Proyecto
 
-- `BRAND_ID`: Este campo representa un identificador único para la marca a la que pertenece el producto (por ejemplo, "1" podría representar a la marca ZARA).
+Este proyecto implementa un servicio REST para consultar precios de productos en función de una marca, un producto y una fecha específica. Utiliza una arquitectura hexagonal basada en los principios de **Domain-Driven Design (DDD)** para garantizar un diseño modular, escalable y fácil de mantener.
 
-- `START_DATE` y `END_DATE`: Estos campos definen un rango de fechas durante el cual un precio y una tarifa son aplicables para un producto específico. Indican la fecha de inicio y la fecha de finalización de la validez del precio y la tarifa.
+---
 
-- `PRICE_LIST`: Aquí encontramos un identificador que corresponde a la tarifa específica que se aplica a un producto en un período determinado.
+## Arquitectura del Proyecto
 
-- `PRODUCT_ID`: Este campo almacena un identificador único para cada producto, permitiendo la identificación individual de los artículos en el catálogo.
+### Arquitectura Hexagonal
 
-- `PRIORITY`: Un valor numérico que se utiliza para desambiguar la aplicación de precios en caso de que dos tarifas coincidan en un rango de fechas. La tarifa con la prioridad más alta es la que aplica y por lo tanto la que se debe utilizar.
+La arquitectura hexagonal, también conocida como **Ports and Adapters**, organiza el sistema en capas independientes que interactúan a través de interfaces. Esto permite desacoplar la lógica de negocio de las tecnologías externas.
 
-- `PRICE`: Indica el precio final de venta del producto en la moneda correspondiente.
+#### Componentes Principales:
+1. **Capa de Dominio**:
+   - Contiene las reglas de negocio y las entidades principales.
+   - Es independiente de cualquier tecnología externa.
+   - Ejemplo: `Price`, `PriceParam`, `FinalPrice`.
 
-- `CURR`: Aquí se almacena el código ISO de la moneda en la que se establece el precio.
+2. **Capa de Aplicación**:
+   - Implementa los casos de uso del sistema.
+   - Orquesta las interacciones entre el dominio y las capas externas.
+   - Ejemplo: `PriceUseCase`.
 
-**Objetivo:**
+3. **Capa de Infraestructura**:
+   - Contiene los adaptadores para interactuar con tecnologías externas como bases de datos, APIs, etc.
+   - Ejemplo: `PriceService`, `PriceDataRepository`.
 
-El objetivo principal es crear una aplicación o servicio utilizando el framework Spring Boot que ofrezca un punto de acceso REST para realizar consultas sobre esta base de datos de precios. Este endpoint REST deberá:
+#### Diagrama de Arquitectura
+```plaintext
++-------------------+       +-------------------+
+|   Infraestructura |       |   Infraestructura |
+| (Adaptadores Sec.)|       | (Adaptadores Pri.)|
++-------------------+       +-------------------+
+         ^                           |
+         |                           v
++-------------------------------------------+
+|               Capa de Aplicación           |
+|  (Casos de Uso, Servicios de Aplicación)   |
++-------------------------------------------+
+         ^
+         |
++-------------------+
+|   Capa de Dominio |
+| (Entidades, VO,   |
+|  Repositorios)    |
++-------------------+
+```
 
-- Aceptar como parámetros de entrada la fecha de consulta (o aplicación), el identificador del producto y el identificador de la marca.
+---
 
-- Proporcionar como resultado el identificador del producto, el identificador de la marca, la tarifa que se aplica, el intervalo de fechas durante el cual se aplica el precio y el precio final que debe aplicarse.
+### Principios de Domain-Driven Design (DDD)
 
-**Base de Datos:**
+El diseño del sistema sigue los principios de DDD para garantizar que el código refleje fielmente el dominio del negocio.
 
-La aplicación debe utilizar una base de datos en memoria del tipo H2, la cual debe ser inicializada con los datos de ejemplo proporcionados en **Tabla de Base de Datos** en el siguiente punto. Si es necesario, puedes modificar los nombres de los campos o agregar nuevos campos según consideres apropiado. Asegúrate de elegir los tipos de datos adecuados para cada campo.
+1. **Entidades**:
+    - Representan objetos con identidad única.
+    - Ejemplo: `Price`.
 
-**Tabla de Base de Datos (PRICES):**
+2. **Value Objects**:
+    - Representan conceptos del dominio sin identidad.
+    - Ejemplo: `PriceParam`.
 
-| BRAND_ID | START_DATE            | END_DATE              | PRICE_LIST | PRODUCT_ID | PRIORITY | PRICE | CURR |
-|----------|-----------------------|-----------------------|------------|------------|----------|-------|------|
-| 1        | 2020-06-14-00.00.00   | 2020-12-31-23.59.59   | 1          | 35455      | 0        | 35.50 | EUR  |
-| 1        | 2020-06-14-15.00.00   | 2020-06-14-18.30.00   | 2          | 35455      | 1        | 25.45 | EUR  |
-| 1        | 2020-06-15-00.00.00   | 2020-06-15-11.00.00   | 3          | 35455      | 1        | 30.50 | EUR  |
-| 1        | 2020-06-15-16.00.00   | 2020-12-31-23.59.59   | 4          | 35455      | 1        | 38.95 | EUR  |
+3. **Repositorios**:
+    - Interfaces para acceder a los agregados.
+    - Ejemplo: `PriceRepository`.
 
-**Pruebas:**
+4. **Casos de Uso**:
+    - Encapsulan la lógica de aplicación.
+    - Ejemplo: `PriceUseCase`.
 
-Adicionalmente, se espera que desarrolles pruebas para el endpoint REST que validen las siguientes solicitudes al servicio utilizando los datos de ejemplo proporcionados:
+5. **Mapeadores**:
+    - Transforman datos entre las capas.
+    - Ejemplo: `PriceMapper`.
 
-1. Prueba 1: Realizar una petición a las 10:00 del día 14 para el producto 35455 y la marca 1 (ZARA).
+---
 
-2. Prueba 2: Realizar una petición a las 16:00 del día 14 para el producto 35455 y la marca 1 (ZARA).
+## Guía de Ejecución
 
-3. Prueba 3: Realizar una petición a las 21:00 del día 14 para el producto 35455 y la marca 1 (ZARA).
+### Prerrequisitos
+- **Java 17** o superior.
+- **Gradle** instalado.
+- **Docker** (opcional, si se usa una base de datos en contenedor).
 
-4. Prueba 4: Realizar una petición a las 10:00 del día 15 para el producto 35455 y la marca 1 (ZARA).
+### Pasos para Ejecutar el Proyecto
+1. Clona el repositorio:
+   ```bash
+   git clone [URL_DEL_REPOSITORIO]
+   cd [NOMBRE_DEL_PROYECTO]
+   ```
+2. Compila el proyecto:
+   ```bash
+   ./gradlew build
+   ```
+3. Ejecuta la aplicación:
+   ```bash
+   ./gradlew bootRun
+   ```
 
-5. Prueba 5: Realizar una petición a las 21:00 del día 16 para el producto 35455 y la marca 1 (ZARA).
+### Ejecución de Tests Automatizados
+Para ejecutar los tests, usa el siguiente comando:
+```bash
+./gradlew test
+```
 
-**Comentarios adicionales:**
+### Acceso a la Documentación Swagger
+1. Inicia la aplicación.
+2. Accede a la documentación Swagger en:
+   ```
+   http://localhost:8080/webjars/swagger-ui/index.html
+   ```
+ [![Swagger](images/swagger.png)](http://localhost:8080/webjars/swagger-ui/index.html)
+---
 
-- Asegúrate de que el servicio pueda manejar solicitudes para diferentes productos y marcas, y devolver resultados precisos en función de los parámetros proporcionados.
+## Cobertura de Código
 
-- Puedes usar cualquier biblioteca o tecnología de pruebas que consideres adecuada para validar el comportamiento del servicio REST.
+### Generar y Visualizar el Reporte de Cobertura
+1. Genera el reporte de cobertura con JaCoCo:
+   ```bash
+   ./gradlew jacocoTestReport
+   ```
+2. Abre el archivo `build/reports/jacoco/test/html/index.html` en tu navegador.
 
+[![JaCoCo](images/jacocoReport.png)]()
+---
+
+## Caso de Uso Principal
+
+### Descripción del Flujo
+El caso de uso principal permite consultar el precio más relevante para un producto y marca en una fecha específica.
+
+#### Flujo desde el Endpoint hasta el Repositorio:
+1. **Controlador (`PriceController`)**:
+    - Recibe la solicitud HTTP.
+    - Valida los parámetros de entrada.
+    - Convierte los datos de entrada en un modelo de dominio (`PriceParam`).
+    - Llama al caso de uso correspondiente.
+
+2. **Caso de Uso (`PriceUseCase`)**:
+    - Orquesta la lógica de negocio.
+    - Llama al repositorio para obtener los precios relevantes.
+    - Aplica la lógica de prioridad para seleccionar el precio más relevante.
+    - Devuelve el resultado como un modelo de dominio (`FinalPrice`).
+
+3. **Repositorio (`PriceService`)**:
+    - Implementa la lógica de acceso a datos.
+    - Consulta la base de datos utilizando `PriceDataRepository`.
+    - Convierte los datos de la base en modelos de dominio (`Price`).
+
+4. **Base de Datos**:
+    - Almacena los precios en la tabla `PRICES`.
+
+#### Diagrama de Secuencia
+```plaintext
+Usuario -> Controlador -> Caso de Uso -> Repositorio -> Base de Datos
+```
+
+---
+
+## Diagramas
+
+### Diagrama de Arquitectura
+```plaintext
++-------------------+       +-------------------+
+|   Infraestructura |       |   Infraestructura |
+| (Adaptadores Sec.)|       | (Adaptadores Pri.)|
++-------------------+       +-------------------+
+         ^                           |
+         |                           v
++-------------------------------------------+
+|               Capa de Aplicación           |
+|  (Casos de Uso, Servicios de Aplicación)   |
++-------------------------------------------+
+         ^
+         |
++-------------------+
+|   Capa de Dominio |
+| (Entidades, VO,   |
+|  Repositorios)    |
++-------------------+
+```
+
+### Diagrama de Flujo del Caso de Uso
+```plaintext
++-------------------+
+|   PriceController |
++-------------------+
+          |
+          v
++-------------------+
+|    PriceUseCase   |
++-------------------+
+          |
+          v
++-------------------+
+|    PriceService   |
++-------------------+
+          |
+          v
++-------------------+
+|    Base de Datos  |
++-------------------+
+```
+
+---
+
+## Estructura del Proyecto
+
+```plaintext
+src/
+├── main/
+│   ├── java/
+│   │   ├── com.bcnc.domain/       # Capa de Dominio
+│   │   ├── com.bcnc.application/  # Capa de Aplicación
+│   │   ├── com.bcnc.infrastructure/ # Capa de Infraestructura
+│   └── resources/
+│       ├── application.yml           # Configuración
+├── test/                             # Tests unitarios y de integración
+build.gradle                          # Configuración de Gradle
+```
+
+---

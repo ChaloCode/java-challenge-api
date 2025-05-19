@@ -12,20 +12,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 @OpenAPIDefinition(
     info = @Info(
-        title = "api-name",
-        version = "1.0.0",
-        description = "API description"
+        title = "java-challenge-api",
+        version = "1.0.0-RELEASE",
+        description = "REST API challenge in Spring Boot and H2 database"
     ),
     servers = {
-        @Server(
-            url = "http://domain-of-your-app.melisystems.com",
-            description = "scope = dev | test"),
-        @Server(
-            url = "http://domain-of-your-app.melisystems.com",
-            description = "scope = prod"),
-        @Server(
-            url = "https://domain-of-your-app.melioffice.com",
-            description = "Server to call from local machine. scope = dev | test"),
         @Server(
             url = "http://localhost:8080",
             description = "Local machine for development purposes")
