@@ -10,8 +10,8 @@ public abstract class AdapterOperations<E, D, I, R extends ReactiveCrudRepositor
 
   protected R repository;
   protected ObjectMapper mapper;
-  private Class<D> dataClass;
-  private Function<D, E> toEntityFn;
+  private final Class<D> dataClass;
+  private final Function<D, E> toEntityFn;
 
   @SuppressWarnings("unchecked")
   protected AdapterOperations(R repository, ObjectMapper mapper, Function<D, E> toEntityFn) {

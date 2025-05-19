@@ -6,9 +6,9 @@ import org.springframework.context.annotation.FilterType;
 
 @Configuration
 @ComponentScan(basePackages = "com.bcnc.usecase",
-        includeFilters = {
-                @ComponentScan.Filter(type = FilterType.REGEX, pattern = "^.+UseCase$")
-        },
-        useDefaultFilters = false)
+    includeFilters = {
+        @ComponentScan.Filter(type = FilterType.REGEX, pattern = "^.+UseCase$")
+    },
+    useDefaultFilters = false)
 public class UseCasesConfig {
 }
