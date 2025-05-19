@@ -1,8 +1,9 @@
 package com.bcnc.usecase.repository;
 
 import com.bcnc.model.price.Price;
-import reactor.core.publisher.Mono;
+import com.bcnc.model.price.PriceParam;
+import reactor.core.publisher.Flux;
 
 public interface PriceRepository {
-  Mono<Price> saveOrUpdate(Price price);
+  Flux<Price> getPrices(PriceParam param);
 }
