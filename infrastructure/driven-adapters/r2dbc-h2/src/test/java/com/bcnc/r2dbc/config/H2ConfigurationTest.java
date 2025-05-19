@@ -1,6 +1,7 @@
 package com.bcnc.r2dbc.config;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static uk.org.webcompere.systemstubs.SystemStubs.withEnvironmentVariable;
 
 import io.r2dbc.spi.ConnectionFactory;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,4 +29,21 @@ class H2ConfigurationTest {
     String factoryString = factory.toString();
     assertThat(factoryString).contains("test_db");
   }
+
+  @Test
+  void shouldUseDefaultDatabaseNameWhenEnvVariableIsNotSet() throws Exception {
+    withEnvironmentVariable("DB_NAME", null).execute(() -> {
+      H2Configuration config = new H2Configuration();
+      assertThat(config.connectionFactory().toString()).contains("test_db");
+    });
+  }
+
+  @Test
+  void shouldUseCustomDatabaseNameWhenEnvVariableIsSet() throws Exception {
+    withEnvironmentVariable("DB_NAME", "custom_db").execute(() -> {
+      H2Configuration config = new H2Configuration();
+      assertThat(config.connectionFactory().toString()).contains("custom_db");
+    });
+  }
+
 }
