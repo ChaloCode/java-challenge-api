@@ -1,0 +1,4 @@
+{
+  "code": "0-1",
+  "message": "Validate error on 'PriceParamRequest': brandId - brandId debe ser numérico y mayor a 0"
+}
