@@ -4,7 +4,7 @@
 
 ## Descripción del Proyecto
 
-Este proyecto implementa un servicio REST para consultar precios de productos en función de una marca, un producto y una fecha específica. Utiliza una arquitectura hexagonal basada en los principios de **Domain-Driven Design (DDD)** para garantizar un diseño modular, escalable y fácil de mantener.
+Este proyecto implementa un servicio REST para consultar precios de productos en función de una marca, un producto y una fecha específica. Utiliza una arquitectura hexagonal basada en las convenciones de **Domain-Driven Design (DDD)** para garantizar un diseño modular, escalable y fácil de mantener.
 
 ---
 
@@ -20,12 +20,16 @@ La arquitectura hexagonal, también conocida como **Ports and Adapters**, organi
    - Es independiente de cualquier tecnología externa.
    - Ejemplo: `Price`, `PriceParam`, `FinalPrice`.
 
-2. **Capa de Aplicación**:
+2. **Capa de Dominio: caso de uso**:
    - Implementa los casos de uso del sistema.
-   - Orquesta las interacciones entre el dominio y las capas externas.
    - Ejemplo: `PriceUseCase`.
 
-3. **Capa de Infraestructura**:
+3. **Capa de Aplicación**:
+   - Inyecta los casos de uso del sistema.
+   - Orquesta las interacciones entre el dominio y las capas externas.
+   - Ejemplo: `UseCasesConfig`.
+
+4. **Capa de Infraestructura**:
    - Contiene los adaptadores para interactuar con tecnologías externas como bases de datos, APIs, etc.
    - Ejemplo: `PriceService`, `PriceDataRepository`.
 
@@ -39,22 +43,23 @@ La arquitectura hexagonal, también conocida como **Ports and Adapters**, organi
          |                           v
 +-------------------------------------------+
 |               Capa de Aplicación           |
-|  (Casos de Uso, Servicios de Aplicación)   |
+|  (Servicios de Aplicación)                 |
 +-------------------------------------------+
          ^
          |
 +-------------------+
 |   Capa de Dominio |
-| (Entidades, VO,   |
+| (Casos de Uso,    |
+|  Entidades, VO,   |
 |  Repositorios)    |
 +-------------------+
 ```
 
 ---
 
-### Principios de Domain-Driven Design (DDD)
+### Domain-Driven Design (DDD)
 
-El diseño del sistema sigue los principios de DDD para garantizar que el código refleje fielmente el dominio del negocio.
+El diseño del sistema sigue las convenciones de DDD para garantizar que el código refleje fielmente el dominio del negocio.
 
 1. **Entidades**:
     - Representan objetos con identidad única.
@@ -172,13 +177,15 @@ Usuario -> Controlador -> Caso de Uso -> Repositorio -> Base de Datos
          |                           v
 +-------------------------------------------+
 |               Capa de Aplicación           |
-|  (Casos de Uso, Servicios de Aplicación)   |
+|               (Inyección de casos de  Uso, |
+|                 Servicios de Aplicación)   |
 +-------------------------------------------+
          ^
          |
 +-------------------+
 |   Capa de Dominio |
 | (Entidades, VO,   |
+|  Casos de usos)   |
 |  Repositorios)    |
 +-------------------+
 ```
