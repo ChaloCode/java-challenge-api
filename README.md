@@ -90,6 +90,12 @@ Para ejecutar los tests, usa el siguiente comando:
 ./gradlew test
 ```
 
+### CURL
+Importa el siguiente curl para realizar una solicitud HTTP al endpoint:
+```bash
+curl --location 'localhost:8080/api/brands/1/products/35455/prices/2020-06-16 21:00:00'
+```
+
 ### Acceso a la Documentación Swagger
 1. Inicia la aplicación.
 2. Accede a la documentación Swagger en:
