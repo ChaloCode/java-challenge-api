@@ -18,20 +18,25 @@ La arquitectura hexagonal, también conocida como **Ports and Adapters**, organi
 1. **Capa de Dominio**:
    - Contiene las reglas de negocio y las entidades principales.
    - Es independiente de cualquier tecnología externa.
-   - Ejemplo: `Price`, `PriceParam`, `FinalPrice`.
+   - **Entidades**: `Price`.
+   - **Objetos de Valor**: `PriceParam`, `FinalPrice`.
 
 2. **Capa de Dominio: caso de uso**:
    - Implementa los casos de uso del sistema.
+   - **Repositorios**: `PriceRepository`.
    - Ejemplo: `PriceUseCase`.
 
 3. **Capa de Aplicación**:
-   - Inyecta los casos de uso del sistema.
-   - Orquesta las interacciones entre el dominio y las capas externas.
+   - Inyecta los casos de uso del sistema para ser utilizados por las capas externas.
+   - No contiene lógica de negocio.
+   - Inicializa el proyecto
    - Ejemplo: `UseCasesConfig`.
 
 4. **Capa de Infraestructura**:
    - Contiene los adaptadores para interactuar con tecnologías externas como bases de datos, APIs, etc.
-   - Ejemplo: `PriceService`, `PriceDataRepository`.
+   - Ejemplo:
+      - **Adaptadores Secundarios**: `PriceService` (implementación de `PriceRepository`).
+      - **Mapeadores**: `PriceMapper`.
 
 #### Diagrama de Arquitectura
 ```plaintext
@@ -42,8 +47,9 @@ La arquitectura hexagonal, también conocida como **Ports and Adapters**, organi
          ^                           |
          |                           v
 +-------------------------------------------+
-|               Capa de Aplicación           |
-|  (Servicios de Aplicación)                 |
+|               Capa de Aplicación             |
+|  (Inicializa de Aplicación                   |
+| y inyecta los caso de uso)                |
 +-------------------------------------------+
          ^
          |
@@ -56,33 +62,6 @@ La arquitectura hexagonal, también conocida como **Ports and Adapters**, organi
 ```
 
 ---
-
-### Domain-Driven Design (DDD)
-
-El diseño del sistema sigue las convenciones de DDD para garantizar que el código refleje fielmente el dominio del negocio.
-
-1. **Entidades**:
-    - Representan objetos con identidad única.
-    - Ejemplo: `Price`.
-
-2. **Value Objects**:
-    - Representan conceptos del dominio sin identidad.
-    - Ejemplo: `PriceParam`.
-
-3. **Repositorios**:
-    - Interfaces para acceder a los agregados.
-    - Ejemplo: `PriceRepository`.
-
-4. **Casos de Uso**:
-    - Encapsulan la lógica de aplicación.
-    - Ejemplo: `PriceUseCase`.
-
-5. **Mapeadores**:
-    - Transforman datos entre las capas.
-    - Ejemplo: `PriceMapper`.
-
----
-
 ## Guía de Ejecución
 
 ### Prerrequisitos

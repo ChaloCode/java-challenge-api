@@ -1,7 +1,7 @@
 package com.bcnc.api.rest.price.mapper;
 
 import com.bcnc.api.rest.price.dto.PriceParamRequest;
-import com.bcnc.model.price.PriceParam;
+import com.bcnc.model.price.valueo.bjects.PriceParam;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")

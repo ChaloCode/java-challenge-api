@@ -1,15 +1,17 @@
-package com.bcnc.model.price;
+package com.bcnc.model.price.entities;
 
 import java.time.LocalDateTime;
 import lombok.Builder;
 
 @Builder(toBuilder = true)
-public record FinalPrice(
-    Long productId,
+public record Price(
     Long brandId,
-    Integer priceList,
     LocalDateTime startDate,
     LocalDateTime endDate,
-    double price
+    Integer priceList,
+    Long productId,
+    int priority,
+    double price,
+    String currency
 ) {
 }

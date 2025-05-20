@@ -1,7 +1,7 @@
 package com.bcnc.usecase.repository;
 
-import com.bcnc.model.price.Price;
-import com.bcnc.model.price.PriceParam;
+import com.bcnc.model.price.entities.Price;
+import com.bcnc.model.price.valueo.bjects.PriceParam;
 import reactor.core.publisher.Flux;
 
 public interface PriceRepository {

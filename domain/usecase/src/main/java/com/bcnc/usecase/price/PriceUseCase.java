@@ -1,8 +1,8 @@
 package com.bcnc.usecase.price;
 
-import com.bcnc.model.price.FinalPrice;
-import com.bcnc.model.price.Price;
-import com.bcnc.model.price.PriceParam;
+import com.bcnc.model.price.valueo.bjects.FinalPrice;
+import com.bcnc.model.price.entities.Price;
+import com.bcnc.model.price.valueo.bjects.PriceParam;
 import com.bcnc.usecase.repository.PriceRepository;
 import java.util.Comparator;
 import lombok.RequiredArgsConstructor;
