@@ -5,7 +5,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.bcnc.model.price.entities.Price;
-import com.bcnc.model.price.valueo.bjects.PriceParam;
+import com.bcnc.model.price.value.objects.PriceParam;
 import com.bcnc.usecase.repository.PriceRepository;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
