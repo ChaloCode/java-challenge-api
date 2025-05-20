@@ -1,6 +1,6 @@
 # Solución
 
-![Swagger](images/youtube.png)](https://youtu.be/Pn9kx5L-0xYl)
+[![Swagger](images/youtube.png)](https://youtu.be/Pn9kx5L-0xYl)
 
 ## Prueba Técnica Inditex Core Platform
 
