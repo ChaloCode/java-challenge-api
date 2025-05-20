@@ -1,5 +1,7 @@
 # Solución
 
+![Swagger](images/youtube.png)](https://youtu.be/Pn9kx5L-0xYl)
+
 ## Prueba Técnica Inditex Core Platform
 
 ## Descripción del Proyecto
@@ -88,6 +90,12 @@ La arquitectura hexagonal, también conocida como **Ports and Adapters**, organi
 Para ejecutar los tests, usa el siguiente comando:
 ```bash
 ./gradlew test
+```
+
+### CURL
+Importa el siguiente curl para realizar una solicitud HTTP al endpoint:
+```bash
+curl --location 'localhost:8080/api/brands/1/products/35455/prices/2020-06-16 21:00:00'
 ```
 
 ### Acceso a la Documentación Swagger
