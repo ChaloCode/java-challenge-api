@@ -1,4 +1,4 @@
-package com.bcnc.model.price;
+package com.bcnc.model.price.entities;
 
 import java.time.LocalDateTime;
 import lombok.Builder;

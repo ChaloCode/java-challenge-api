@@ -1,4 +1,4 @@
-package com.bcnc.model.price;
+package com.bcnc.model.price.valueo.bjects;
 
 import java.time.LocalDateTime;
 import lombok.Builder;
