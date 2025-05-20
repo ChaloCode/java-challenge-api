@@ -1,7 +1,7 @@
 package com.bcnc.api.rest.price.mapper;
 
 import com.bcnc.api.rest.price.dto.FinalPriceResponse;
-import com.bcnc.model.price.valueo.bjects.FinalPrice;
+import com.bcnc.model.price.value.objects.FinalPrice;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")

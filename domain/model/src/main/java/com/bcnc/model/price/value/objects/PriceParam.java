@@ -1,4 +1,4 @@
-package com.bcnc.model.price.valueo.bjects;
+package com.bcnc.model.price.value.objects;
 
 import com.bcnc.model.exception.ErrorFormatToLocalDateException;
 import com.bcnc.model.exception.codes.MyCustomCodes;
