@@ -1,7 +1,7 @@
 package com.bcnc.r2dbc.models.price;
 
-import com.bcnc.model.price.Price;
-import com.bcnc.model.price.PriceParam;
+import com.bcnc.model.price.entities.Price;
+import com.bcnc.model.price.valueo.bjects.PriceParam;
 import com.bcnc.r2dbc.helper.AdapterOperations;
 import com.bcnc.usecase.repository.PriceRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
