@@ -4,7 +4,7 @@ import com.bcnc.api.exception.RequestValidator;
 import com.bcnc.api.rest.price.mapper.FinalPriceResponseMapper;
 import com.bcnc.api.rest.price.mapper.PriceParamMapper;
 import com.bcnc.api.rest.price.mapper.PriceParamRequestMapper;
-import com.bcnc.model.exception.codes.MyCustomCodes;
+import com.bcnc.exception.codes.MyCustomCodes;
 import com.bcnc.usecase.price.PriceUseCase;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,7 +29,7 @@ public class PriceController {
         .flatMap(priceUseCase::execute)
         .map(finalPriceResponseMapper::toResponse)
         .flatMap(response -> ServerResponse.ok().bodyValue(response))
-        .switchIfEmpty(ServerResponse.noContent().build());
+        .switchIfEmpty(ServerResponse.badRequest().build());
   }
 
 }

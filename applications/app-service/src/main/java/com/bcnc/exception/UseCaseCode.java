@@ -1,6 +1,6 @@
-package com.bcnc.model.exception;
+package com.bcnc.exception;
 
-import com.bcnc.model.utils.Generated;
+import com.bcnc.utils.Generated;
 import lombok.Getter;
 
 @Generated

@@ -2,14 +2,14 @@ package com.bcnc.r2dbc.models.price;
 
 import com.bcnc.model.price.entities.Price;
 import com.bcnc.model.price.value.objects.PriceParam;
+import com.bcnc.model.repository.PriceRepository;
 import com.bcnc.r2dbc.helper.AdapterOperations;
-import com.bcnc.usecase.repository.PriceRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.r2dbc.convert.MappingR2dbcConverter;
 import org.springframework.r2dbc.core.DatabaseClient;
 import org.springframework.stereotype.Repository;
-import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @Repository
 @Slf4j
@@ -30,7 +30,7 @@ public class PriceService extends AdapterOperations<Price, PriceData, Long, Pric
   }
 
   @Override
-  public Flux<Price> getPrices(PriceParam param) {
+  public Mono<Price> getPrices(PriceParam param) {
     return repository.findAllValidPricesForProductAndBrandAt(
             param.brandId(),
             param.productId(),
