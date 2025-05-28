@@ -1,7 +1,7 @@
 package com.bcnc.api.exception;
 
-import com.bcnc.model.exception.InvalidParametersException;
-import com.bcnc.model.exception.codes.MyCustomCodes;
+import com.bcnc.exception.InvalidParametersException;
+import com.bcnc.exception.codes.MyCustomCodes;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;

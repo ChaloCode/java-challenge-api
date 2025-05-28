@@ -2,8 +2,8 @@ package com.bcnc.api.exception;
 
 
 import com.bcnc.api.exception.dto.CustomErrorResponse;
-import com.bcnc.model.exception.ErrorFormatToLocalDateException;
-import com.bcnc.model.exception.InvalidParametersException;
+import com.bcnc.exception.ErrorFormatToLocalDateException;
+import com.bcnc.exception.InvalidParametersException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.web.WebProperties;
 import org.springframework.boot.autoconfigure.web.reactive.error.AbstractErrorWebExceptionHandler;

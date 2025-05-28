@@ -1,12 +1,10 @@
 # Solución
 
-[![Swagger](images/youtube.png)](https://youtu.be/Pn9kx5L-0xYl)
-
-## Prueba Técnica Inditex Core Platform
-
 ## Descripción del Proyecto
 
-Este proyecto implementa un servicio REST para consultar precios de productos en función de una marca, un producto y una fecha específica. Utiliza una arquitectura hexagonal basada en las convenciones de **Domain-Driven Design (DDD)** para garantizar un diseño modular, escalable y fácil de mantener.
+Este proyecto implementa un servicio REST para consultar precios de productos en función de una marca, un producto y una
+fecha específica. Utiliza una arquitectura hexagonal basada en las convenciones de **Domain-Driven Design (DDD)** para
+garantizar un diseño modular, escalable y fácil de mantener.
 
 ---
 
@@ -14,64 +12,43 @@ Este proyecto implementa un servicio REST para consultar precios de productos en
 
 ### Arquitectura Hexagonal
 
-La arquitectura hexagonal, también conocida como **Ports and Adapters**, organiza el sistema en capas independientes que interactúan a través de interfaces. Esto permite desacoplar la lógica de negocio de las tecnologías externas.
+La arquitectura hexagonal, también conocida como **Ports and Adapters**, organiza el sistema en capas independientes que
+interactúan a través de interfaces. Esto permite desacoplar la lógica de negocio de las tecnologías externas.
 
 #### Componentes Principales:
+
 1. **Capa de Dominio**:
-   - Contiene las reglas de negocio y las entidades principales.
-   - Es independiente de cualquier tecnología externa.
-   - **Entidades**: `Price`.
-   - **Objetos de Valor**: `PriceParam`, `FinalPrice`.
+    - Contiene las reglas de negocio y las entidades principales.
+    - Es independiente de cualquier tecnología externa.
+    - **Entidades**: `Price`.
+    - **Objetos de Valor**: `PriceParam`, `FinalPrice`.
+    -  **Repositorios**: `PriceRepository`.
 
-2. **Capa de Dominio: caso de uso**:
+2. **Capa de Aplicación**:
+    - Inyecta los casos de uso del sistema para ser utilizados por las capas externas.
    - Implementa los casos de uso del sistema.
-   - **Repositorios**: `PriceRepository`.
-   - Ejemplo: `PriceUseCase`.
-
-3. **Capa de Aplicación**:
-   - Inyecta los casos de uso del sistema para ser utilizados por las capas externas.
-   - No contiene lógica de negocio.
-   - Inicializa el proyecto
-   - Ejemplo: `UseCasesConfig`.
+    - Inicializa el proyecto
+    - Ejemplo: `UseCasesConfig` , `PriceUseCase`.
 
 4. **Capa de Infraestructura**:
-   - Contiene los adaptadores para interactuar con tecnologías externas como bases de datos, APIs, etc.
-   - Ejemplo:
-      - **Adaptadores Secundarios**: `PriceService` (implementación de `PriceRepository`).
-      - **Mapeadores**: `PriceMapper`.
-
-#### Diagrama de Arquitectura
-```plaintext
-+-------------------+       +-------------------+
-|   Infraestructura |       |   Infraestructura |
-| (Adaptadores Sec.)|       | (Adaptadores Pri.)|
-+-------------------+       +-------------------+
-         ^                           |
-         |                           v
-+-------------------------------------------+
-|               Capa de Aplicación             |
-|  (Inicializa de Aplicación                   |
-| y inyecta los caso de uso)                |
-+-------------------------------------------+
-         ^
-         |
-+-------------------+
-|   Capa de Dominio |
-| (Casos de Uso,    |
-|  Entidades, VO,   |
-|  Repositorios)    |
-+-------------------+
-```
+    - Contiene los adaptadores para interactuar con tecnologías externas como bases de datos, APIs, etc.
+    - Ejemplo:
+        -  **Adaptadores Principales**: `PriceController`.
+        - **Adaptadores Secundarios**: `PriceService` (implementación de `PriceRepository`).
+        - **Mapeadores**: `PriceMapper`.
 
 ---
+
 ## Guía de Ejecución
 
 ### Prerrequisitos
+
 - **Java 17** o superior.
 - **Gradle** instalado.
 - **Docker** (opcional, si se usa una base de datos en contenedor).
 
 ### Pasos para Ejecutar el Proyecto
+
 1. Clona el repositorio:
    ```bash
    git clone [URL_DEL_REPOSITORIO]
@@ -87,29 +64,36 @@ La arquitectura hexagonal, también conocida como **Ports and Adapters**, organi
    ```
 
 ### Ejecución de Tests Automatizados
+
 Para ejecutar los tests, usa el siguiente comando:
+
 ```bash
 ./gradlew test
 ```
 
 ### CURL
+
 Importa el siguiente curl para realizar una solicitud HTTP al endpoint:
+
 ```bash
 curl --location 'localhost:8080/api/brands/1/products/35455/prices/2020-06-16 21:00:00'
 ```
 
 ### Acceso a la Documentación Swagger
+
 1. Inicia la aplicación.
 2. Accede a la documentación Swagger en:
    ```
    http://localhost:8080/webjars/swagger-ui/index.html
    ```
- [![Swagger](images/swagger.png)](http://localhost:8080/webjars/swagger-ui/index.html)
+
+[![Swagger](images/swagger.png)](http://localhost:8080/webjars/swagger-ui/index.html)
 ---
 
 ## Cobertura de Código
 
 ### Generar y Visualizar el Reporte de Cobertura
+
 1. Genera el reporte de cobertura con JaCoCo:
    ```bash
    ./gradlew jacocoTestReport
@@ -122,9 +106,11 @@ curl --location 'localhost:8080/api/brands/1/products/35455/prices/2020-06-16 21
 ## Caso de Uso Principal
 
 ### Descripción del Flujo
+
 El caso de uso principal permite consultar el precio más relevante para un producto y marca en una fecha específica.
 
 #### Flujo desde el Endpoint hasta el Repositorio:
+
 1. **Controlador (`PriceController`)**:
     - Recibe la solicitud HTTP.
     - Valida los parámetros de entrada.
@@ -146,6 +132,7 @@ El caso de uso principal permite consultar el precio más relevante para un prod
     - Almacena los precios en la tabla `PRICES`.
 
 #### Diagrama de Secuencia
+
 ```plaintext
 Usuario -> Controlador -> Caso de Uso -> Repositorio -> Base de Datos
 ```
@@ -155,6 +142,7 @@ Usuario -> Controlador -> Caso de Uso -> Repositorio -> Base de Datos
 ## Diagramas
 
 ### Diagrama de Arquitectura
+
 ```plaintext
 +-------------------+       +-------------------+
 |   Infraestructura |       |   Infraestructura |
@@ -162,22 +150,22 @@ Usuario -> Controlador -> Caso de Uso -> Repositorio -> Base de Datos
 +-------------------+       +-------------------+
          ^                           |
          |                           v
-+-------------------------------------------+
-|               Capa de Aplicación           |
-|               (Inyección de casos de  Uso, |
-|                 Servicios de Aplicación)   |
-+-------------------------------------------+
-         ^
-         |
 +-------------------+
 |   Capa de Dominio |
-| (Entidades, VO,   |
-|  Casos de usos)   |
+| ( Entidades, VO,  |
 |  Repositorios)    |
 +-------------------+
+         ^
+         |
++-------------------------------------------+
+|               Capa de Aplicación         |
+|  (Inicializa de Aplicación               |
+| y implementa los caso de uso)            |
++-------------------------------------------+
 ```
 
 ### Diagrama de Flujo del Caso de Uso
+
 ```plaintext
 +-------------------+
 |   PriceController |

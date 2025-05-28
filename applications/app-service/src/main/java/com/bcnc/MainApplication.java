@@ -1,7 +1,7 @@
 package com.bcnc;
 
-import com.bcnc.model.utils.Generated;
-import com.bcnc.model.utils.ScopeUtils;
+import com.bcnc.utils.Generated;
+import com.bcnc.utils.ScopeUtils;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.servers.Server;

@@ -4,38 +4,38 @@ info:
   description: API description
   version: 1.0.0
 servers:
-- url: http://domain-of-your-app.melisystems.com
-  description: scope = dev | test
-- url: http://domain-of-your-app.melisystems.com
-  description: scope = prod
-- url: https://domain-of-your-app.melioffice.com
-  description: Server to call from local machine. scope = dev | test
-- url: http://localhost:8080
-  description: Local machine for development purposes
+  - url: http://domain-of-your-app.melisystems.com
+    description: scope = dev | test
+  - url: http://domain-of-your-app.melisystems.com
+    description: scope = prod
+  - url: https://domain-of-your-app.melioffice.com
+    description: Server to call from local machine. scope = dev | test
+  - url: http://localhost:8080
+    description: Local machine for development purposes
 paths:
   /rest/resource:
     get:
       tags:
-      - groupOfOperationsName
+        - groupOfOperationsName
       summary: Operation summary
       description: Operation description
       operationId: operationIdName
       parameters:
-      - name: queryParamOne
-        in: query
-        required: true
-        schema:
-          type: string
-      - name: queryParamTwo
-        in: query
-        required: true
-        schema:
-          type: string
-      - name: queryParamThree
-        in: query
-        required: true
-        schema:
-          type: string
+        - name: queryParamOne
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: queryParamTwo
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: queryParamThree
+          in: query
+          required: true
+          schema:
+            type: string
       responses:
         "200":
           description: Successful operation

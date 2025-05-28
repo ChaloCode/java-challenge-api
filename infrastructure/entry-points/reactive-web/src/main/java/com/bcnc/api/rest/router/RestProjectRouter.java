@@ -48,7 +48,7 @@ public class RestProjectRouter {
           },
           responses = {
               @ApiResponse(responseCode = "200", description = "Operación exitosa, se devuelve el precio", content = @Content(schema = @Schema(implementation = FinalPriceResponse.class))),
-              @ApiResponse(responseCode = "204", description = "No hay contenido, no se encontró un precio relevante"),
+              @ApiResponse(responseCode = "404", description = "No hay contenido, no se encontró un precio relevante"),
               @ApiResponse(responseCode = "400", description = "Solicitud inválida, parámetros incorrectos", content = @Content(schema = @Schema(implementation = CustomErrorResponse.class))),
               @ApiResponse(responseCode = "404", description = "No se encontró el recurso solicitado"),
               @ApiResponse(responseCode = "500", description = "Error interno del servidor")
