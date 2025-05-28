@@ -1,4 +1,4 @@
-package com.bcnc.model.utils;
+package com.bcnc.utils;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;

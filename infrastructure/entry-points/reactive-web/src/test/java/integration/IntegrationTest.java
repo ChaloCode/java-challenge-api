@@ -1,4 +1,4 @@
-package com.bcnc.integration;
+package integration;
 
 
 import com.bcnc.MainApplication;

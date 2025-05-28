@@ -1,7 +1,7 @@
-package com.bcnc.model.exception.codes;
+package com.bcnc.exception.codes;
 
-import com.bcnc.model.exception.UseCaseCode;
-import com.bcnc.model.utils.Generated;
+import com.bcnc.exception.UseCaseCode;
+import com.bcnc.utils.Generated;
 import lombok.Getter;
 
 @Generated

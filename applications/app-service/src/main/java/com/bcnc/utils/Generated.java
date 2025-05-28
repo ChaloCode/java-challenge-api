@@ -1,4 +1,4 @@
-package com.bcnc.model.utils;
+package com.bcnc.utils;
 
 import static java.lang.annotation.ElementType.CONSTRUCTOR;
 import static java.lang.annotation.ElementType.METHOD;

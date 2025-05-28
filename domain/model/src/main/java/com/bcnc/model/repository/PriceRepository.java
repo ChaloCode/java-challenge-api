@@ -1,9 +1,9 @@
-package com.bcnc.usecase.repository;
+package com.bcnc.model.repository;
 
 import com.bcnc.model.price.entities.Price;
 import com.bcnc.model.price.value.objects.PriceParam;
-import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 public interface PriceRepository {
-  Flux<Price> getPrices(PriceParam param);
+  Mono<Price> getPrices(PriceParam param);
 }

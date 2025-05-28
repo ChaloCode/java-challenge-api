@@ -6,15 +6,14 @@ import static org.mockito.Mockito.when;
 
 import com.bcnc.model.price.entities.Price;
 import com.bcnc.model.price.value.objects.PriceParam;
-import com.bcnc.usecase.repository.PriceRepository;
-import java.util.List;
+import com.bcnc.model.repository.PriceRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
@@ -34,21 +33,17 @@ class PriceUseCaseTest {
   @BeforeEach
   void setUp() {
     podamFactory = new PodamFactoryImpl();
-     priceParam = podamFactory.manufacturePojo(PriceParam.class);
+    priceParam = podamFactory.manufacturePojo(PriceParam.class);
   }
 
   @Test
   void shouldReturnHighestPriorityPrice() {
-    Price lowPriorityPrice = podamFactory.manufacturePojo(Price.class).toBuilder()
-        .priority(0)
-        .build();
-
     Price highPriorityPrice = podamFactory.manufacturePojo(Price.class).toBuilder()
         .priority(1)
         .build();
 
     when(priceRepository.getPrices(priceParam))
-        .thenReturn(Flux.fromIterable(List.of(lowPriorityPrice, highPriorityPrice)));
+        .thenReturn(Mono.just(highPriorityPrice));
 
     StepVerifier.create(priceUseCase.execute(priceParam))
         .assertNext(finalPrice -> {
@@ -64,7 +59,7 @@ class PriceUseCaseTest {
 
   @Test
   void shouldReturnEmptyWhenNoPricesAvailable() {
-    when(priceRepository.getPrices(priceParam)).thenReturn(Flux.empty());
+    when(priceRepository.getPrices(priceParam)).thenReturn(Mono.empty());
 
     StepVerifier.create(priceUseCase.execute(priceParam))
         .verifyComplete();
@@ -75,7 +70,7 @@ class PriceUseCaseTest {
   @Test
   void shouldHandleErrorWhenRepositoryFails() {
     when(priceRepository.getPrices(priceParam))
-        .thenReturn(Flux.error(new RuntimeException("Repository error")));
+        .thenReturn(Mono.error(new RuntimeException("Repository error")));
 
     StepVerifier.create(priceUseCase.execute(priceParam))
         .expectErrorMatches(throwable -> throwable instanceof RuntimeException &&

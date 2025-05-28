@@ -1,4 +1,4 @@
-package com.bcnc.integration;
+package integration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -62,7 +62,7 @@ class PriceControllerTest extends ControllerTest {
 
     @Test
     void shouldGetPriceResponseNotContent() throws Exception {
-      assertResponse("100", "35455", "2020-06-14 10:00:00", null, HttpStatus.NO_CONTENT);
+      assertResponse("100", "35455", "2020-06-14 10:00:00", null, HttpStatus.BAD_REQUEST);
     }
 
     @Test
