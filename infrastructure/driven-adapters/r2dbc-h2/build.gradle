@@ -1,8 +1,8 @@
-dependencies {    implementation 'org.springframework.boot:spring-boot-starter-data-r2dbc'
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-r2dbc'
     implementation 'io.r2dbc:r2dbc-h2'
     implementation 'com.h2database:h2'
     implementation project(':model')
-    implementation project(':usecase')
 
     implementation 'org.springframework:spring-context'
 
