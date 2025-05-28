@@ -1,9 +1,5 @@
 # Solución
 
-[![Swagger](images/youtube.png)](https://youtu.be/Pn9kx5L-0xYl)
-
-## Prueba Técnica Inditex Core Platform
-
 ## Descripción del Proyecto
 
 Este proyecto implementa un servicio REST para consultar precios de productos en función de una marca, un producto y una
@@ -26,47 +22,20 @@ interactúan a través de interfaces. Esto permite desacoplar la lógica de nego
     - Es independiente de cualquier tecnología externa.
     - **Entidades**: `Price`.
     - **Objetos de Valor**: `PriceParam`, `FinalPrice`.
+    -  **Repositorios**: `PriceRepository`.
 
-2. **Capa de Dominio: caso de uso**:
-    - Implementa los casos de uso del sistema.
-    - **Repositorios**: `PriceRepository`.
-    - Ejemplo: `PriceUseCase`.
-
-3. **Capa de Aplicación**:
+2. **Capa de Aplicación**:
     - Inyecta los casos de uso del sistema para ser utilizados por las capas externas.
-    - No contiene lógica de negocio.
+   - Implementa los casos de uso del sistema.
     - Inicializa el proyecto
-    - Ejemplo: `UseCasesConfig`.
+    - Ejemplo: `UseCasesConfig` , `PriceUseCase`.
 
 4. **Capa de Infraestructura**:
     - Contiene los adaptadores para interactuar con tecnologías externas como bases de datos, APIs, etc.
     - Ejemplo:
+        -  **Adaptadores Principales**: `PriceController`.
         - **Adaptadores Secundarios**: `PriceService` (implementación de `PriceRepository`).
         - **Mapeadores**: `PriceMapper`.
-
-#### Diagrama de Arquitectura
-
-```plaintext
-+-------------------+       +-------------------+
-|   Infraestructura |       |   Infraestructura |
-| (Adaptadores Sec.)|       | (Adaptadores Pri.)|
-+-------------------+       +-------------------+
-         ^                           |
-         |                           v
-+-------------------------------------------+
-|               Capa de Aplicación             |
-|  (Inicializa de Aplicación                   |
-| y inyecta los caso de uso)                |
-+-------------------------------------------+
-         ^
-         |
-+-------------------+
-|   Capa de Dominio |
-| (Casos de Uso,    |
-|  Entidades, VO,   |
-|  Repositorios)    |
-+-------------------+
-```
 
 ---
 
@@ -181,19 +150,18 @@ Usuario -> Controlador -> Caso de Uso -> Repositorio -> Base de Datos
 +-------------------+       +-------------------+
          ^                           |
          |                           v
-+-------------------------------------------+
-|               Capa de Aplicación           |
-|               (Inyección de casos de  Uso, |
-|                 Servicios de Aplicación)   |
-+-------------------------------------------+
-         ^
-         |
 +-------------------+
 |   Capa de Dominio |
-| (Entidades, VO,   |
-|  Casos de usos)   |
+| ( Entidades, VO,  |
 |  Repositorios)    |
 +-------------------+
+         ^
+         |
++-------------------------------------------+
+|               Capa de Aplicación         |
+|  (Inicializa de Aplicación               |
+| y implementa los caso de uso)            |
++-------------------------------------------+
 ```
 
 ### Diagrama de Flujo del Caso de Uso
